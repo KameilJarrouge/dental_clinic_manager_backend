@@ -1,0 +1,38 @@
+{
+  "name": "dental-clinic-manager-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "devStart": "nodemon server.ts",
+    "dev": "ts-node --esm server.ts",
+    "node": "node --loader ts-node/esm server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^4.12.0-dev.9",
+    "@types/cors": "^2.8.13",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/multer": "^1.4.7",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "datetime": "^0.0.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.0",
+    "moment": "^2.29.4",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.13.0",
+    "keyv": "^4.5.2",
+    "nodemon": "^2.0.20",
+    "prisma": "^4.12.0-dev.9",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  }
+}

@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @default("admin")
+  password String @default("admin")
+}
+
+model Patient {
+  id             Int             @id @default(autoincrement())
+  name           String
+  sex            Boolean
+  age            Int
+  contact        String?
+  occupation     String?
+  details        String?
+  Checkups       Checkups[]
+  Attachments    Attachement[]
+  CoursePatients CoursePatient[]
+  Teeth          Tooth[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Tooth {
+  id                 Int                  @id @default(autoincrement())
+  number             Int
+  notes              String?
+  CoursePatientTeeth CoursePatientTooth[]
+  Patient            Patient?             @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId          Int?
+}
+
+model Checkups {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  notes     String?
+  Patient   Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId Int?
+}
+
+model Attachement {
+  id        Int      @id @default(autoincrement())
+  fileName  String
+  createdAt DateTime @default(now())
+  notes     String?
+  Patient   Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId Int?
+}
+
+model Course {
+  id             Int             @id @default(autoincrement())
+  name           String
+  effectName     String
+  colorIndex     Int
+  CoursePatients CoursePatient[]
+}
+
+model CoursePatient {
+  id                 Int                  @id @default(autoincrement())
+  isFinished         Boolean              @default(false)
+  isOld              Boolean              @default(false)
+  createdAt          DateTime             @default(now())
+  finishedAt         DateTime?
+  Sessions           Session[]
+  CoursePatientTeeth CoursePatientTooth[]
+  details            String?
+  Patient            Patient?             @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId          Int?
+  Course             Course?              @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId           Int?
+}
+
+model CoursePatientTooth {
+  id              Int            @id @default(autoincrement())
+  CoursePatient   CoursePatient? @relation(fields: [coursePatientId], references: [id], onDelete: Cascade)
+  coursePatientId Int?
+  Tooth           Tooth?         @relation(fields: [toothId], references: [id], onDelete: Cascade)
+  toothId         Int?
+
+  @@unique([coursePatientId, toothId])
+}
+
+model Session {
+  id              Int            @id @default(autoincrement())
+  createdAt       DateTime       @default(now())
+  details         String?
+  CoursePatient   CoursePatient? @relation(fields: [coursePatientId], references: [id], onDelete: Cascade)
+  coursePatientId Int?
+}

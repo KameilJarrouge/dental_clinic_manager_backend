@@ -1,0 +1,76 @@
+
+# testing endpoint
+
+GET http://localhost:3002/
+
+
+###
+
+
+# create a patient with a set of teeth
+POST http://localhost:3002/patients/create 
+Content-Type: application/json
+
+{
+    "name":"kamil",
+    "age":24,
+    "sex": true,
+    "occupation": "student",
+    "details": "test details",
+    "teeth":[
+        {
+            "number":11,
+            "notes":"some notes about the tooth"
+        },
+        {
+            "number":21,
+            "notes":"some notes about the tooth"
+        }
+    ]
+}
+
+
+###
+
+
+# all patients
+GET http://localhost:3002/patients/active
+
+
+###
+
+
+# single patient
+GET http://localhost:3002/patients/8
+
+###
+
+
+# delete all patients
+DELETE http://localhost:3002/patients/delete 
+
+
+###
+
+
+# delete a single patient
+DELETE http://localhost:3002/patients/delete/7 
+
+
+###
+
+POST http://localhost:3002/patients/7/attachments/create
+
+
+
+###
+
+
+# login 
+POST http://localhost:3002/login
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"admin"
+}
