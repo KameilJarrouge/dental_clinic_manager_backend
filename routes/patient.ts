@@ -1,4 +1,4 @@
-import { prisma, upload } from "../server";
+import { prisma } from "../server";
 import express from "express";
 import {
   CoursePatientWithCourseAndSessionAndTeeth,
@@ -124,35 +124,35 @@ router.get("/:id/attachments", async (req, res) => {
 /**
  * POST:: create a new attachment
  */
-router.post(
-  "/:id/attachments/create",
-  upload.single("file"),
-  async (req, res) => {
-    let prefix =
-      "id--" +
-      Number(req.params.id) +
-      "--timestamp--" +
-      moment().format("yyyy-MM-DD-hh-mm-ss") +
-      "--originalName--";
-    if (req.file === undefined) return;
-    const tempPath = req.file.path;
-    const targetPath = path.join(
-      __dirname,
-      `../public/xrays/${prefix + req.file.originalname}`
-    );
-    fs.renameSync(tempPath, targetPath);
+// router.post(
+//   "/:id/attachments/create",
+//   upload.single("file"),
+//   async (req, res) => {
+//     let prefix =
+//       "id--" +
+//       Number(req.params.id) +
+//       "--timestamp--" +
+//       moment().format("yyyy-MM-DD-hh-mm-ss") +
+//       "--originalName--";
+//     if (req.file === undefined) return;
+//     const tempPath = req.file.path;
+//     const targetPath = path.join(
+//       __dirname,
+//       `../public/xrays/${prefix + req.file.originalname}`
+//     );
+//     fs.renameSync(tempPath, targetPath);
 
-    await prisma.attachement.create({
-      data: {
-        fileName: prefix + req.file.originalname,
-        notes: req.body.notes,
-        createdAt: new Date(req.body.createdAt),
-        patientId: Number(req.params.id),
-      },
-    });
-    res.send({ statusMessage: "attachment added!" });
-  }
-);
+//     await prisma.attachement.create({
+//       data: {
+//         fileName: prefix + req.file.originalname,
+//         notes: req.body.notes,
+//         createdAt: new Date(req.body.createdAt),
+//         patientId: Number(req.params.id),
+//       },
+//     });
+//     res.send({ statusMessage: "attachment added!" });
+//   }
+// );
 
 /**
  * GET:: all checkups of a patient

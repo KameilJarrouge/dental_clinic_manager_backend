@@ -1,4 +1,3 @@
-import { decrypt, encrypt } from "../encryption";
 import { AUTHENTICATION_ERROR_401, prisma } from "../server";
 import express from "express";
 const router = express.Router();
@@ -9,12 +8,12 @@ router.put("/update", async (req, res) => {
   const admin = await prisma.user.findFirst();
   if (
     admin?.username === req.body.username &&
-    decrypt(admin?.password) === req.body.password
+    admin?.password === req.body.password
   ) {
     await prisma.user.update({
       data: {
         username: req.body.newUsername,
-        password: encrypt(req.body.newPassword),
+        password: req.body.newPassword,
       },
       where: { id: admin?.id },
     });

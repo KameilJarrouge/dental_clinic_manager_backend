@@ -47,7 +47,7 @@ export function createAndSaveKeys(log = true) {
 
 //Encrypting text
 export function encrypt(text) {
-  let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+  let cipher = crypto.createCipheriv(algorithm, Buffer.from(key, 0, 0), iv, {});
   let encrypted = cipher.update(text);
   encrypted = Buffer.concat([encrypted, cipher.final()]);
   return encrypted.toString("hex");

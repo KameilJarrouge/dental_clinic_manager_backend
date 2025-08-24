@@ -1,0 +1,2 @@
+DATABASE_URL="file:./example.db"
+ACCESS_TOKEN_SECRET="Run this command to get an access token in your terminal<node -e "console.log(require('crypto').randomBytes(32).toString('hex'))">"
