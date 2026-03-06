@@ -1,4 +1,4 @@
-import { prisma } from "../server";
+import { prisma, upload } from "../server";
 import express from "express";
 import {
   CoursePatientWithCourseAndSessionAndTeeth,
@@ -82,7 +82,7 @@ router.post("/create", async (req, res) => {
           notes: tooth.notes,
           patientId: patient.id,
         },
-      })
+      }),
     );
   }
   await prisma.$transaction(teethInsert);
@@ -113,7 +113,7 @@ router.get("/:id/attachments", async (req, res) => {
   if (req.query.date !== "Invalid date") {
     dateCondition = { createdAt: { gte: new Date(String(req.query.date)) } };
   }
-  const result = await prisma.attachement.findMany({
+  const result = await prisma.attachment.findMany({
     where: { patientId: Number(req.params.id), ...dateCondition },
     orderBy: { createdAt: String(req.query.order) === "true" ? "asc" : "desc" },
     take: Number(req.query.take),
@@ -124,35 +124,35 @@ router.get("/:id/attachments", async (req, res) => {
 /**
  * POST:: create a new attachment
  */
-// router.post(
-//   "/:id/attachments/create",
-//   upload.single("file"),
-//   async (req, res) => {
-//     let prefix =
-//       "id--" +
-//       Number(req.params.id) +
-//       "--timestamp--" +
-//       moment().format("yyyy-MM-DD-hh-mm-ss") +
-//       "--originalName--";
-//     if (req.file === undefined) return;
-//     const tempPath = req.file.path;
-//     const targetPath = path.join(
-//       __dirname,
-//       `../public/xrays/${prefix + req.file.originalname}`
-//     );
-//     fs.renameSync(tempPath, targetPath);
+router.post(
+  "/:id/attachments/create",
+  upload.single("file"),
+  async (req, res) => {
+    let prefix =
+      "id--" +
+      Number(req.params.id) +
+      "--timestamp--" +
+      moment().format("yyyy-MM-DD-hh-mm-ss") +
+      "--originalName--";
+    if (req.file === undefined) return;
+    const tempPath = req.file.path;
+    const targetPath = path.join(
+      __dirname,
+      `../public/xrays/${prefix + req.file.originalname}`,
+    );
+    fs.renameSync(tempPath, targetPath);
 
-//     await prisma.attachement.create({
-//       data: {
-//         fileName: prefix + req.file.originalname,
-//         notes: req.body.notes,
-//         createdAt: new Date(req.body.createdAt),
-//         patientId: Number(req.params.id),
-//       },
-//     });
-//     res.send({ statusMessage: "attachment added!" });
-//   }
-// );
+    await prisma.attachment.create({
+      data: {
+        fileName: prefix + req.file.originalname,
+        notes: req.body.notes,
+        createdAt: new Date(req.body.createdAt),
+        patientId: Number(req.params.id),
+      },
+    });
+    res.send({ statusMessage: "attachment added!" });
+  },
+);
 
 /**
  * GET:: all checkups of a patient
@@ -257,7 +257,7 @@ router.post("/:id/courses-patients/create/", async (req, res) => {
           coursePatientId: coursePatient.id,
           toothId: tooth,
         },
-      })
+      }),
     );
   }
   await prisma.$transaction(coursePatientTeeth);

@@ -9,7 +9,7 @@ import path from "path";
 import userExistsOrMake from "./helpers/userExistsOrMake";
 export const AUTHENTICATION_ERROR_401 = 401;
 export const AUTHORIZATION_ERROR_403 = 403;
-// export const upload = multer({ dest: "/temp" });
+export const upload = multer({ dest: "./temp" });
 export const prisma = new PrismaClient();
 
 (async () => {
@@ -25,7 +25,7 @@ export const prisma = new PrismaClient();
     cors({
       credentials: true,
       methods: "*",
-    })
+    }),
   );
   // app.use(handleKeyAccess);
 
@@ -41,7 +41,7 @@ export const prisma = new PrismaClient();
     ) {
       const accessToken = jwt.sign(
         Object(admin),
-        process.env.ACCESS_TOKEN_SECRET as string
+        process.env.ACCESS_TOKEN_SECRET as string,
         // { expiresIn: "60m" }
       );
       res.json({ accessToken: accessToken });
@@ -62,7 +62,7 @@ export const prisma = new PrismaClient();
       (err, user) => {
         if (err) return res.sendStatus(AUTHORIZATION_ERROR_403);
         next();
-      }
+      },
     );
   }
 
