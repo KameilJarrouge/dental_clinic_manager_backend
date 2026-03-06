@@ -136,6 +136,7 @@ router.post(
       "--originalName--";
     if (req.file === undefined) return;
     const tempPath = req.file.path;
+    fs.mkdirSync(path.join(__dirname, `../public/xrays/`), { recursive: true });
     const targetPath = path.join(
       __dirname,
       `../public/xrays/${prefix + req.file.originalname}`,

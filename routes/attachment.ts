@@ -28,19 +28,31 @@ router.put("/:id/update", upload.single("file"), async (req, res) => {
       moment().format("yyyy-MM-DD-hh-mm-ss") +
       "--originalName--";
     // remove old file
+
     let att = await prisma.attachment.findFirst({
       select: { fileName: true, id: true },
       where: { id: Number(req.params.id) },
     });
-    fs.unlinkSync(path.join(__dirname, `../public/xrays/${att?.fileName}`));
+
+    const pathToDelete = path.join(
+      __dirname,
+      `../public/xrays/${att?.fileName}`,
+    );
+    if (fs.existsSync(pathToDelete)) fs.unlinkSync(pathToDelete);
+
     fileName = { fileName: prefix + req.file.originalname };
+
     const tempPath = req.file.path;
+
+    fs.mkdirSync(path.join(__dirname, `../public/xrays/`), { recursive: true });
+
     const targetPath = path.join(
       __dirname,
       `../public/xrays/${prefix + req.file.originalname}`,
     );
     fs.renameSync(tempPath, targetPath);
   }
+
   await prisma.attachment.update({
     data: {
       ...fileName,
@@ -62,7 +74,9 @@ router.delete("/:id/delete", async (req, res) => {
     select: { fileName: true, id: true },
     where: { id: Number(req.params.id) },
   });
-  fs.unlinkSync(path.join(__dirname, `../public/xrays/${att?.fileName}`));
+  const pathToDelete = path.join(__dirname, `../public/xrays/${att?.fileName}`);
+  if (fs.existsSync(pathToDelete)) fs.unlinkSync(pathToDelete);
+
   await prisma.attachment.delete({ where: { id: Number(req.params.id) } });
   res.send({ statusMessage: "Attachment Deleted!" });
 });
