@@ -4,7 +4,7 @@ Patient record management and treatment tracking system for dental practices.
 
 ## Overview
 
-Digital patient management system built to replace paper-based record keeping for a dental clinic. Processed 50+ patients monthly over 2 years of active use, managing patient records, treatment history, and X-ray storage.
+Digital patient management system built to replace paper-based record keeping for a dental clinic. Managed 50+ patient visits monthly over 2 years of active use, maintaining comprehensive treatment records for hundreds of patients across multiple sessions.
 
 Features a custom interactive tooth chart component for visual treatment tracking and progress documentation.
 
@@ -42,7 +42,7 @@ This application is split into two repositories:
 
 ## Status
 
-In production from January 2023 to December 2024. Processed 1,200+ patients over its operational lifetime.
+In production from January 2023 to December 2024.
 
 ## License
 
