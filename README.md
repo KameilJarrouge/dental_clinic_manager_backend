@@ -40,10 +40,6 @@ This application is split into two repositories:
 - **Frontend:** React SPA with Tailwind CSS for styling ([Visit Repo](https://github.com/KameilJarrouge/dental_clinic_manager_frontend))
 - **Backend:** Express.js REST API with Prisma ORM for database access (You are here)
 
-## Status
-
-In production from January 2023 to December 2024.
-
 ## License
 
 MIT License
